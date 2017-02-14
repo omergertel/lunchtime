@@ -12,12 +12,12 @@ const config = {
   entry: [
     'es5-shim/es5-shim',
     'es5-shim/es5-sham',
-    './app/bundles/App/startup/registration',
+    './client/app/bundles/App/startup/registration',
   ],
 
   output: {
     filename: 'webpack-bundle.js',
-    path: '../app/assets/webpack',
+    path: './app/assets/webpack',
   },
 
   resolve: {
