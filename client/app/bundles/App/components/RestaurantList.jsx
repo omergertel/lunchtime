@@ -51,7 +51,7 @@ class RestaurantList extends React.Component{
     }
 
     return (
-        <div className="content">
+        <div>
             <div className="filters row">
               <div className="col-xs-4">
                 <Filter title="Cuisine"
@@ -72,7 +72,9 @@ class RestaurantList extends React.Component{
                         onChange={this._setSpeed.bind(this)}/>
               </div>
             </div>
+            <div className="content">
             {restaurants}
+            </div>
         </div>
     )
   }
