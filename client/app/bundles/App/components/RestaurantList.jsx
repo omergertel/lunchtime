@@ -46,7 +46,7 @@ class RestaurantList extends React.Component{
     if (restaurants.length === 0){
       restaurants = (
         <div className="not-found">
-          <img src="http://parade.condenast.com/wp-content/uploads/2014/06/seinfeld-soup-nazi-ftr.jpg" />
+          <img src="assets/not_found.jpg" />
           <p>No lunch for you, come back one year!</p>
         </div>
       )
