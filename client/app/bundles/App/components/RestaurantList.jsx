@@ -45,7 +45,7 @@ class RestaurantList extends React.Component{
     this.state.restaurants.forEach(function(restaurant) {
       if (['Any',restaurant.genre].includes(selected_genre) &&
           ['Any',restaurant.delivery_time].includes(selected_speed) &&
-          ['Any',''+restaurant.rating].includes(''+selected_rating)) {
+          ['Any',String(restaurant.rating)].includes(String(selected_rating))) {
         restaurants.push(<Restaurant key={restaurant.id} {...restaurant} />)
       }
     });
