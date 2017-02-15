@@ -4,7 +4,6 @@ class Filter extends React.Component{
   render() {
     let options = [...this.props.options];
     options.sort();
-    console.log(options)
     options = options.map(option=>
       <option key={option} value={option}>{String(option).capitalize()}</option>
     )
