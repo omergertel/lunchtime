@@ -24,7 +24,16 @@ class RestaurantsController < ApplicationController
 
   def index
     respond_to do |format|
-      restaurants = Restaurant.where(filter_params)
+      restaurants = Restaurant.all
+      if filter_params[:genre]
+        restaurants = restaurants.where(genre: filter_params[:genre])
+      end
+      if filter_params[:rating]
+        restaurants = restaurants.where('rating >= ?', filter_params[:rating])
+      end
+      if filter_params[:delivery_time]
+        restaurants = restaurants.where('delivery_time <= ?', filter_params[:delivery_time])
+      end
       format.json { render json: restaurants }
     end
   end
