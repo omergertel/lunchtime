@@ -19,20 +19,11 @@ class RestaurantList extends React.Component{
   componentWillMount() {
     let _this = this
     $.get('restaurants/').done(function(response){
-      let genres = {Any:1};
-      response.forEach(restaurant => genres[restaurant.genre] = 1);
-
-      let speeds = {Any:1};
-      response.forEach(restaurant => speeds[restaurant.delivery_time] = 1);
-
-      let ratings = {Any:1};
-      response.forEach(restaurant => ratings[restaurant.rating] = 1);
-
       _this.setState({
         restaurants: response,
-        genres: Object.keys(genres),
-        speeds: Object.keys(speeds),
-        ratings: Object.keys(ratings)
+        genres: _this._uniqueProperty(response, 'genre'),
+        speeds: _this._uniqueProperty(response, 'delivery_time'),
+        ratings: _this._uniqueProperty(response, 'rating')
       })
     })
   }
@@ -84,6 +75,9 @@ class RestaurantList extends React.Component{
             {restaurants}
         </div>
     )
+  }
+  _uniqueProperty(arr, property) {
+    return ['Any', ...new Set(arr.map(obj => obj[property]))];
   }
   _setGenre(e) {
     this.setState({ selected_genre: e.target.value })
