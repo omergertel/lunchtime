@@ -1,6 +1,7 @@
 import React from 'react'
 import $ from 'jquery'
-import AddNewFilter from './AddNewFilter'
+import Filter from './Filter'
+import Slider from './Slider'
 import {hashHistory, Link} from 'react-router'
 
 class AddNew extends React.Component{
@@ -8,11 +9,12 @@ class AddNew extends React.Component{
     super();
     this.state = {
       error: '',
-      selected_genre: '',
-      selected_speed: '',
-      selected_rating: '',
+      selected_genre: 'Any',
+      selected_speed: 120,
+      selected_rating: 'Any',
       genres: [],
-      speeds: [],
+      delivery_time_min: 0,
+      delivery_time_max: 120,
       ratings: []
     };
   }
@@ -21,7 +23,8 @@ class AddNew extends React.Component{
     $.get('restaurants/options').done(function(response){
       _this.setState({
         genres: response['genre'],
-        speeds: response['delivery_times'],
+        delivery_time_min: response['delivery_time_min'],
+        delivery_time_max: response['delivery_time_max'],
         ratings: response['ratings']
       })
     })
@@ -41,10 +44,6 @@ class AddNew extends React.Component{
     }
     if (!restaurant.genre){
       this.setState({error: 'Please choose cuisine'});
-      return;
-    }
-    if (!restaurant.delivery_time){
-      this.setState({error: 'Please choose speed'});
       return;
     }
     if (!restaurant.rating){
@@ -71,9 +70,23 @@ class AddNew extends React.Component{
                 <label>Restaurant Name</label>
                 <input ref={(input) => this.name = input} type="text" className="form-control" placeholder="Enter name" />
               </div>
-              <AddNewFilter title="Cuisine" options={this.state.genres} onChange={this._setGenre.bind(this)} />
-              <AddNewFilter title="Speed" options={this.state.speeds} onChange={this._setSpeed.bind(this)} />
-              <AddNewFilter title="Rating" options={this.state.ratings} onChange={this._setRating.bind(this)} />
+              <Filter title="Cuisine"
+                      topOption="Choose one..."
+                      topOptionDisabled="true"
+                      options={this.state.genres}
+                      onChange={this._setGenre.bind(this)} />
+              <Filter title="Star Rating"
+                      topOption="Choose one..."
+                      topOptionDisabled="true"
+                      options={this.state.ratings}
+                      onChange={this._setRating.bind(this)} />
+              <Slider title="Speed"
+                      topOption="Choose one..."
+                      topOptionDisabled="true"
+                      min={this.state.delivery_time_min}
+                      max={this.state.delivery_time_max}
+                      value={this.state.selected_speed}
+                      onChange={this._setSpeed.bind(this)} />
               <div className="checkbox">
                 <label>
                   <input type="checkbox" ref={(input) => this.accepts_10bis = input} /> Accepts 10Bis

@@ -14,7 +14,8 @@ class RestaurantsController < ApplicationController
     respond_to do |format|
       opts = {
         genre: Restaurant.genres.keys.to_a,
-        delivery_times: Restaurant.delivery_times.keys.to_a,
+        delivery_time_min: 0,
+        delivery_time_max: 120,
         ratings: [0, 1, 2, 3]
       }
       format.json { render json: opts }

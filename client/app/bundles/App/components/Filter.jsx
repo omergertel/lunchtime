@@ -6,7 +6,13 @@ class Filter extends React.Component{
     options.sort();
     options = options.map(option=>
       <option key={option} value={option}>{String(option).capitalize()}</option>
-    )
+    );
+    options.splice(0,0, (<option key={this.props.topOption}
+                                 value={this.props.topOption}
+                                 disabled={this.props.topOptionDisabled}>
+                          {this.props.topOption}
+                         </option>));
+
     return (
         <div className="filter">
           <label>{this.props.title}</label>
