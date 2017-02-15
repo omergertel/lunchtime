@@ -16,7 +16,7 @@ class Filter extends React.Component{
     return (
         <div className="filter">
           <label>{this.props.title}</label>
-          <select value={this.props.value} onChange={this.props.onChange} className="form-control">
+          <select defaultValue={this.props.topOption} onChange={this.props.onChange} className="form-control">
             {options}
           </select>
         </div>

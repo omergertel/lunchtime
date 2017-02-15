@@ -9,9 +9,9 @@ class AddNew extends React.Component{
     super();
     this.state = {
       error: '',
-      selected_genre: 'Any',
+      selected_genre: '',
       selected_speed: 120,
-      selected_rating: 'Any',
+      selected_rating: '',
       genres: [],
       delivery_time_min: 0,
       delivery_time_max: 120,
