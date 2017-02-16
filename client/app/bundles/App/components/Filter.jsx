@@ -13,10 +13,11 @@ class Filter extends React.Component{
                           {this.props.topOption}
                          </option>));
 
+    let value = (this.props.value === null) ? this.props.topOption : this.props.value;
     return (
         <div className="filter">
           <label>{this.props.title}</label>
-          <select defaultValue={this.props.topOption} onChange={this.props.onChange} className="form-control">
+          <select value={value} onChange={this.props.onChange} className="form-control">
             {options}
           </select>
         </div>

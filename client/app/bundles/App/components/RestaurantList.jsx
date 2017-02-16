@@ -16,30 +16,43 @@ class RestaurantList extends React.Component{
       selected_rating: 'Any'
     };
   }
+  handleRestaurantDelete(target) {
+    let self = this;
+    $.ajax({
+      type: "DELETE",
+      url: 'restaurants/' + target.props.id,
+    }).done(function(response){
+      self.loadData();
+    });
+  }
   componentWillMount() {
-    let _this = this
+    this.loadData();
+  }
+  loadData() {
+    let self = this;
     $.get('restaurants/').done(function(response){
-      let delivery_times = _this._uniqueProperty(response, 'delivery_time');
-      _this.setState({
+      let delivery_times = self.uniqueProperty(response, 'delivery_time');
+      self.setState({
         restaurants: response,
-        genres: _this._uniqueProperty(response, 'genre'),
-        ratings: _this._uniqueProperty(response, 'rating'),
+        genres: self.uniqueProperty(response, 'genre'),
+        ratings: self.uniqueProperty(response, 'rating'),
         delivery_time_min: Math.min(delivery_times),
         delivery_time_max: Math.max(delivery_times),
-      })
-    })
+      });
+    });
   }
   render() {
     let selected_genre = this.state.selected_genre;
     let selected_speed = this.state.selected_speed;
     let selected_rating = this.state.selected_rating;
 
-    let restaurants = []
+    let restaurants = [];
+    let self = this;
     this.state.restaurants.forEach(function(restaurant) {
       if (['Any',restaurant.genre].includes(selected_genre) &&
           restaurant.delivery_time <= selected_speed &&
           (selected_rating ==='Any' || restaurant.rating >= selected_rating)) {
-        restaurants.push(<Restaurant key={restaurant.id} {...restaurant} />)
+        restaurants.push(<Restaurant key={restaurant.id} handleDelete={self.handleRestaurantDelete.bind(self)} {...restaurant} />)
       }
     });
 
@@ -60,20 +73,20 @@ class RestaurantList extends React.Component{
                         topOption="Any"
                         value={this.state.selected_genre}
                         options={this.state.genres}
-                        onChange={this._setGenre.bind(this)}/>
+                        onChange={this.setGenre.bind(this)}/>
               </div>
               <div className="col-xs-4">
                 <Filter title="Minimal Rating"
                         topOption="Any"
                         value={this.state.selected_rating}
                         options={this.state.ratings}
-                        onChange={this._setRating.bind(this)}/>
+                        onChange={this.setRating.bind(this)}/>
               </div>
               <div className="col-xs-4">
                 <Slider title="Speed"
                         value={this.state.selected_speed}
                         min="0" max="120"
-                        onChange={this._setSpeed.bind(this)}/>
+                        onChange={this.setSpeed.bind(this)}/>
               </div>
             </div>
             <div className="content">
@@ -82,16 +95,16 @@ class RestaurantList extends React.Component{
         </div>
     )
   }
-  _uniqueProperty(arr, property) {
+  uniqueProperty(arr, property) {
     return [...new Set(arr.map(obj => obj[property]))];
   }
-  _setGenre(e) {
+  setGenre(e) {
     this.setState({ selected_genre: e.target.value })
   }
-  _setSpeed(e) {
+  setSpeed(e) {
     this.setState({ selected_speed: e.target.value })
   }
-  _setRating(e) {
+  setRating(e) {
     this.setState({ selected_rating: e.target.value })
   }
 };

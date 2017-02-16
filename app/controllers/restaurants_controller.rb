@@ -38,6 +38,29 @@ class RestaurantsController < ApplicationController
     end
   end
 
+  def show
+    respond_to do |format|
+      restaurant = Restaurant.find(params[:id])
+      format.json { render json: restaurant }
+    end
+  end
+
+  def destroy
+    respond_to do |format|
+      restaurant = Restaurant.find(params[:id])
+      restaurant.destroy
+      format.json { render json: restaurant }
+    end
+  end
+
+  def update
+    respond_to do |format|
+      restaurant = Restaurant.find(params[:id])
+      restaurant.update!(restaurant_params)
+      format.json { render json: restaurant }
+    end
+  end
+
   private
 
   def restaurant_params
