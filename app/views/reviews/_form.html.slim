@@ -1,0 +1,16 @@
+div class="row"
+  div class="col-xs-12"
+    h3 Add a review:
+    = form_for([@restaurant, @restaurant.reviews.build]) do |f|
+      = f.hidden_field :restaurant_id
+      div class="form-group"
+        = f.label :name
+        = f.text_field :name, {class: "form-control"}
+      div class="form-group"
+        = f.label :rating
+        = f.select :rating, [0,1,2,3], {}, {class: "form-control"}
+      div class="form-group"
+        = f.label :comment
+        = f.text_area :comment, {class: "form-control"}
+      div.actions
+        = f.submit "Submit", {class: "btn btn-default"}

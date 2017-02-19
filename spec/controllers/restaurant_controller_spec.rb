@@ -15,7 +15,7 @@ RSpec.describe RestaurantsController, type: :controller do
     Restaurant.create(restaurant_hash)
   end
 
-  describe 'validations' do
+  describe 'actions' do
     it 'should allow creating a restaurant' do
       new_hash = restaurant_hash.clone
       new_hash[:name] = 'New Name'
@@ -91,13 +91,15 @@ RSpec.describe RestaurantsController, type: :controller do
 
   def convert_json_to_symbol_hash(restaurants, keys)
     restaurants.map do |rest|
-      Hash[rest.map do |k, v|
+      converted = {}
+      rest.each do |k, v|
         k = k.to_sym
         if keys.include? k
           v = v.to_sym if [:genre].include? k
-          [k, v]
+          converted[k] = v
         end
-      end]
+      end
+      converted
     end
   end
 end

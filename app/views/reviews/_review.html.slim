@@ -1,0 +1,10 @@
+div class="row restaurant"
+  div class="col-xs-2"
+    span class="title" #{review.name}
+  div class="col-xs-8"
+    p= render partial: "reviews/rating", locals: {rating: review.rating} 
+    p #{review.comment}
+  div class="col-xs-2"
+    = form_for restaurant_review_path(@restaurant, review), url: restaurant_review_path(@restaurant, review), html: {method: :delete} do |f| 
+      = f.button class: "btn btn-default error"
+        span class="glyphicon glyphicon-trash error" 

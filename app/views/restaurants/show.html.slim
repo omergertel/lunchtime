@@ -1,0 +1,24 @@
+div class="container"
+  div class="header"
+    h1 class="logo" EatNow
+    | Let's find lunch now...
+  div
+    div class="filters row"
+      a href="/"
+        button class="btn btn-default" Back
+  div class="content"
+    div class="restaurant row"
+      div class="col-xs-2 genre" #{@restaurant.genre_letter}
+      div class="col-xs-8"
+        p class="title" #{@restaurant.name}
+        p= render partial: "reviews/rating", locals: {rating: @restaurant.rating}
+        p Delivery time: up to #{@restaurant.delivery_time} minutes
+      div class="col-xs-2"
+        a href="/#/restaurants/#{@restaurant.id}/edit"
+          button class="btn btn-default"
+            span class="glyphicon glyphicon-edit"
+        = form_for restaurant_path(@restaurant), html: {method: :delete} do |f| 
+          = f.button class: "btn btn-default error"
+            span class="glyphicon glyphicon-trash error" 
+    = render @restaurant.reviews  
+    = render 'reviews/form'
