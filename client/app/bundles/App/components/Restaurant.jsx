@@ -7,7 +7,7 @@ class Restaurant extends React.Component{
     return (
         <div className="restaurant row">
           <div className="col-xs-2 genre">
-            {this.renderGenre()}
+            {this.props.genre_letter}
           </div>
           <div className="col-xs-8">
             <a href={`/restaurants/${this.props.id}/`} className="title">{this.props.name} {this.render10bis()}</a>
@@ -35,16 +35,6 @@ class Restaurant extends React.Component{
       stars.push(<span key={i} className="glyphicon glyphicon-star-empty"></span>)
     }
     return stars;
-  }
-  renderGenre() {
-    switch (this.props.genre) {
-      case "sushi":
-        return 'D'
-      case "burgers":
-        return 'A'
-      default:
-        return 'Z'
-    }
   }
 };
 
