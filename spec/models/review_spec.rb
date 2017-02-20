@@ -24,7 +24,7 @@ RSpec.describe Review, type: :model do
   describe 'validation' do
     it 'should require fields' do
       [:name, :rating].each do |field|
-        bad_review = review.select { |k, _v| k != field }
+        bad_review = review.reject { |k, _v| k == field }
         expect(rest.reviews.new(bad_review).valid?).to be false
       end
     end
