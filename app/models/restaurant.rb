@@ -13,10 +13,10 @@ class Restaurant < ApplicationRecord
 
   def genre_letter
     case genre.to_sym
-    when :sushi
-      'D'
-    when :burgers
-      'A'
+      when :sushi
+        'D'
+      when :burgers
+        'A'
     end
   end
 end

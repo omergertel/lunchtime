@@ -1,0 +1,5 @@
+Style/CaseIndentation:
+  IndentOneStep: true
+
+Style/TrailingCommaInLiteral:
+  EnforcedStyleForMultiline: comma

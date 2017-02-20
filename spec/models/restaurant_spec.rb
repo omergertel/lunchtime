@@ -7,7 +7,7 @@ RSpec.describe Restaurant, type: :model do
       genre: :sushi,
       rating: 1,
       accepts_10bis: true,
-      delivery_time: 30
+      delivery_time: 30,
     }
   end
 
