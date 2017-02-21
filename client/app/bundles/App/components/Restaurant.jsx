@@ -7,10 +7,10 @@ class Restaurant extends React.Component{
           <div className="col-xs-2 genre">
             {this._renderGenre()}
           </div>
-          <div className="col-xs-4">
+          <div className="col-xs-8">
             <span className="title">{this.props.name} {this._render10bis()}</span>
             <p>Rating: {this._renderStars()}<br/>
-               Delivery time: {this.props.delivery_time.capitalize()}</p>
+               Delivery time: up to {this.props.delivery_time} minutes</p>
           </div>
         </div>
     )

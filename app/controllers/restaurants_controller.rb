@@ -14,7 +14,8 @@ class RestaurantsController < ApplicationController
     respond_to do |format|
       opts = {
         genre: Restaurant.genres.keys.to_a,
-        delivery_times: Restaurant.delivery_times.keys.to_a,
+        delivery_time_min: 0,
+        delivery_time_max: 120,
         ratings: [0, 1, 2, 3]
       }
       format.json { render json: opts }
@@ -23,7 +24,16 @@ class RestaurantsController < ApplicationController
 
   def index
     respond_to do |format|
-      restaurants = Restaurant.where(filter_params)
+      restaurants = Restaurant.all
+      if filter_params[:genre]
+        restaurants = restaurants.where(genre: filter_params[:genre])
+      end
+      if filter_params[:rating]
+        restaurants = restaurants.where('rating >= ?', filter_params[:rating])
+      end
+      if filter_params[:delivery_time]
+        restaurants = restaurants.where('delivery_time <= ?', filter_params[:delivery_time])
+      end
       format.json { render json: restaurants }
     end
   end

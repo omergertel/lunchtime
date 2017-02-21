@@ -117,6 +117,10 @@
   padding-top: 8px;
 }
 
+.new-container .filter {
+  margin-top: 10px;
+}
+
 .error {
   color: red;
   padding: 10px;

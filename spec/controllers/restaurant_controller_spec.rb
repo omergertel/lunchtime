@@ -7,7 +7,7 @@ RSpec.describe RestaurantsController, type: :controller do
       genre: :sushi,
       rating: 1,
       accepts_10bis: true,
-      delivery_time: :slow
+      delivery_time: 30
     }
   end
   let(:keys) { restaurant_hash.keys.to_a }
@@ -40,10 +40,10 @@ RSpec.describe RestaurantsController, type: :controller do
       get :index, format: :json, params: { genre: :burgers }
       expect(JSON.parse(response.body).length).to eq(0)
 
-      get :index, format: :json, params: { delivery_time: :slow }
+      get :index, format: :json, params: { delivery_time: 60 }
       expect(JSON.parse(response.body).length).to eq(1)
 
-      get :index, format: :json, params: { delivery_time: :medium }
+      get :index, format: :json, params: { delivery_time: 15 }
       expect(JSON.parse(response.body).length).to eq(0)
 
       get :index, format: :json, params: { rating: 1 }
@@ -56,7 +56,8 @@ RSpec.describe RestaurantsController, type: :controller do
     it 'should list restaurant creation params' do
       get :options, format: :json
       expect(response.body).to eq({ genre: Restaurant.genres.keys.to_a,
-                                    delivery_times: Restaurant.delivery_times.keys.to_a,
+                                    delivery_time_min: 0,
+                                    delivery_time_max: 120,
                                     ratings: [0, 1, 2, 3] }.to_json)
     end
   end
@@ -68,7 +69,7 @@ RSpec.describe RestaurantsController, type: :controller do
       Hash[rest.map do |k, v|
         k = k.to_sym
         if keys.include? k
-          v = v.to_sym if [:genre, :delivery_time].include? k
+          v = v.to_sym if [:genre].include? k
           [k, v]
         end
       end]

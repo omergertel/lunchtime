@@ -7,7 +7,7 @@ RSpec.describe Restaurant, type: :model do
       genre: :sushi,
       rating: 1,
       accepts_10bis: true,
-      delivery_time: :slow
+      delivery_time: 30
     }
   end
 
@@ -31,11 +31,21 @@ RSpec.describe Restaurant, type: :model do
       expect { Restaurant.new(rest) }.to raise_error(ArgumentError, "'invalid' is not a valid genre")
     end
 
-    it 'should validate delivery_time from enum' do
+    it 'should validate delivery_time' do
       expect(Restaurant.new(rest).valid?).to be true
 
       rest[:delivery_time] = 'invalid'
-      expect { Restaurant.new(rest) }.to raise_error(ArgumentError, "'invalid' is not a valid delivery_time")
+      expect(Restaurant.new(rest).valid?).to be false
+
+      [0, 30, 45, 90, 120].each do |rating|
+        rest[:delivery_time] = rating
+        expect(Restaurant.new(rest).valid?).to be true
+      end
+
+      [-1, 200, 40.5].each do |rating|
+        rest[:delivery_time] = rating
+        expect(Restaurant.new(rest).valid?).to be false
+      end
     end
 
     it 'should validate rating value' do
