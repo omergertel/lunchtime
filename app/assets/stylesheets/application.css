@@ -111,9 +111,13 @@
   width: 50%;
 }
 
+.new-container .actions {
+  display: flex;
+  justify-content: space-around;
+}
+
 .new-container a {
   color: #DAC229;
-  float: right;
   padding-top: 8px;
 }
 

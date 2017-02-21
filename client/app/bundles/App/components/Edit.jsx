@@ -153,8 +153,10 @@ class Edit extends React.Component {
                 {' Accepts 10Bis'}
               </label>
             </div>
-            <button className="btn" onClick={this.save}>Save</button>
-            <Link to="/">Cancel</Link>
+            <div className="actions">
+              <button className="btn" onClick={this.save}>Save</button>
+              <Link to="/">Cancel</Link>
+            </div>
             <p className="error">{this.state.error}</p>
           </form>
         </div>
