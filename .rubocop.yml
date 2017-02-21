@@ -3,3 +3,12 @@ Style/CaseIndentation:
 
 Style/TrailingCommaInLiteral:
   EnforcedStyleForMultiline: comma
+
+Metrics/LineLength:
+  Max: 100
+
+Metrics/BlockLength:
+  Max: 200
+
+Metrics/MethodLength:
+  Max: 50
