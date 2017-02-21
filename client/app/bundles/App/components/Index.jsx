@@ -7,7 +7,7 @@ class App extends React.Component{
     return (
         <div className="container">
           <div className="header">
-            <Link className="add-button" to="/new">
+            <Link className="add-button" to="restaurants/new">
               <img src="assets/add_button.png"></img>
             </Link>
             <h1 className="logo">EatNow</h1>

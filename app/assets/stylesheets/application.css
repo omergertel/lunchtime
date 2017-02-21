@@ -126,3 +126,7 @@
   padding: 10px;
   text-align: center;
 }
+
+.clickable {
+  cursor: pointer;
+}

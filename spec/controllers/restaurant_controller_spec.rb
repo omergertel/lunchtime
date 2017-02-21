@@ -60,6 +60,31 @@ RSpec.describe RestaurantsController, type: :controller do
                                     delivery_time_max: 120,
                                     ratings: [0, 1, 2, 3] }.to_json)
     end
+
+    it 'should get a restaurant by id' do
+      get :show, format: :json, params: { id: 1 }
+      expect(convert_json_to_symbol_hash([JSON.parse(response.body)], keys)).to eq([restaurant_hash])
+    end
+
+    it 'should fail for invalid restaurant id' do
+      expect { get :show, format: :json, params: { id: -1 } }.to raise_error(ActiveRecord::RecordNotFound)
+    end
+
+    it 'should update restuart' do
+      put :update, format: :json, params: { id: 1, restaurant: { rating: 2 } }
+
+      updated_hash = restaurant_hash.clone
+      updated_hash[:rating] = 2
+
+      get :show, format: :json, params: { id: 1 }
+      expect(convert_json_to_symbol_hash([JSON.parse(response.body)], keys)).to eq([updated_hash])
+    end
+
+    it 'should destroy restuart' do
+      get :destroy, format: :json, params: { id: 1 }
+
+      expect { get :show, format: :json, params: { id: 1 } }.to raise_error(ActiveRecord::RecordNotFound)
+    end
   end
 
   private
