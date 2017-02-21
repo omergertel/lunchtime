@@ -1,16 +1,31 @@
+# Restaurant model
 class Restaurant < ApplicationRecord
   include ActiveModel::AttributeMethods
   include ActiveModel::Serialization
-  attr_reader :genre_letter
 
   enum genre: [:sushi, :burgers]
-  validates :name, presence: true, length: { minimum: 2 }, uniqueness: true
-  validates :rating, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3 }
-  validates :genre, presence: true, inclusion: { in: genres.keys }
-  validates :delivery_time, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 120 }
-  validates :accepts_10bis, presence: true, inclusion: { in: [true, false] }
 
-  has_many :reviews
+  attr_reader :genre_letter
+
+  has_many :reviews, dependent: :destroy
+
+  validates :name, presence: true, length: { minimum: 2 }, uniqueness: true
+  validates :genre, presence: true, inclusion: { in: genres.keys }
+  validates :accepts_10bis, inclusion: { in: [true, false] }
+  validates :rating,
+            presence: true,
+            numericality: {
+              only_integer: true,
+              greater_than_or_equal_to: 0,
+              less_than_or_equal_to: 3,
+            }
+  validates :delivery_time,
+            presence: true,
+            numericality: {
+              only_integer: true,
+              greater_than_or_equal_to: 0,
+              less_than_or_equal_to: 120,
+            }
 
   def attributes
     {

@@ -7,7 +7,7 @@ RSpec.describe Review, type: :model do
       genre: :sushi,
       rating: 0,
       accepts_10bis: true,
-      delivery_time: 30
+      delivery_time: 30,
     }
   end
   let(:rest) do
@@ -17,7 +17,7 @@ RSpec.describe Review, type: :model do
     {
       name: 'Name',
       comment: 'Comment',
-      rating: 3
+      rating: 3,
     }
   end
 
@@ -47,7 +47,7 @@ RSpec.describe Review, type: :model do
       rest.reviews.create(new_review)
       expect(rest.rating).to eq(2)
 
-      rest.reviews.all.each(&:destroy)
+      rest.reviews.find_each(&:destroy)
       expect(rest.rating).to eq(0)
     end
   end
