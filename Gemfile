@@ -40,6 +40,7 @@ group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platform: :mri
   gem 'database_cleaner', '~> 1.5.3'
+  gem 'factory_girl_rails', '~> 4.0'
   gem 'rails-controller-testing', '~> 1.0.1'
   gem 'rspec-rails', '~> 3.5.2'
 end

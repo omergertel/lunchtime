@@ -7,11 +7,11 @@ RSpec.describe RestaurantsController, type: :controller do
       genre: :sushi,
       rating: 1,
       accepts_10bis: true,
-      delivery_time: 30
+      delivery_time: 30,
     }
   end
   let(:keys) { restaurant_hash.keys.to_a }
-  before (:each) do
+  let!(:restuart) do
     Restaurant.create(restaurant_hash)
   end
 
@@ -131,11 +131,16 @@ RSpec.describe RestaurantsController, type: :controller do
   describe '#show' do
     it 'should get a restaurant by id' do
       get :show, format: :json, params: { id: 1 }
-      expect(convert_json_to_symbol_hash([JSON.parse(response.body)], keys)).to eq([restaurant_hash])
+      reponse_hash = convert_json_to_symbol_hash([JSON.parse(response.body)], keys)
+      expect(reponse_hash).to eq([restaurant_hash])
     end
 
     it 'should fail for invalid restaurant id' do
-      expect { get :show, format: :json, params: { id: -1 } }.to raise_error(ActiveRecord::RecordNotFound)
+      expect do
+        get :show,
+            format: :json,
+            params: { id: -1 }
+      end.to raise_error(ActiveRecord::RecordNotFound)
     end
 
     it 'should render for html format' do
@@ -160,7 +165,9 @@ RSpec.describe RestaurantsController, type: :controller do
   describe '#destroy' do
     it 'should destroy restuart' do
       get :destroy, format: :json, params: { id: 1 }
-      expect { get :show, format: :json, params: { id: 1 } }.to raise_error(ActiveRecord::RecordNotFound)
+      expect do
+        get :show, format: :json, params: { id: 1 }
+      end.to raise_error(ActiveRecord::RecordNotFound)
       expect(Restaurant.all.length).to eq(0)
     end
   end
