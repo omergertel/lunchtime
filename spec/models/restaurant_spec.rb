@@ -37,13 +37,13 @@ RSpec.describe Restaurant, type: :model do
       rest[:delivery_time] = 'invalid'
       expect(Restaurant.new(rest).valid?).to be false
 
-      [0, 30, 45, 90, 120].each do |rating|
-        rest[:delivery_time] = rating
+      [0, 30, 45, 90, 120].each do |delivery_time|
+        rest[:delivery_time] = delivery_time
         expect(Restaurant.new(rest).valid?).to be true
       end
 
-      [-1, 200, 40.5].each do |rating|
-        rest[:delivery_time] = rating
+      [-1, 200, 40.5].each do |delivery_time|
+        rest[:delivery_time] = delivery_time
         expect(Restaurant.new(rest).valid?).to be false
       end
     end
@@ -54,7 +54,7 @@ RSpec.describe Restaurant, type: :model do
         expect(Restaurant.new(rest).valid?).to be true
       end
 
-      [-1, 4].each do |rating|
+      [-1, 1.4, 4].each do |rating|
         rest[:rating] = rating
         expect(Restaurant.new(rest).valid?).to be false
       end

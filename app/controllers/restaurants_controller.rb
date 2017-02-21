@@ -40,16 +40,18 @@ class RestaurantsController < ApplicationController
 
   def show
     respond_to do |format|
-      restaurant = Restaurant.find(params[:id])
-      format.json { render json: restaurant }
+      @restaurant = Restaurant.find(params[:id])
+      format.json { render json: @restaurant }
+      format.html { render 'show' }
     end
   end
 
   def destroy
     respond_to do |format|
-      restaurant = Restaurant.find(params[:id])
-      restaurant.destroy
-      format.json { render json: restaurant }
+      @restaurant = Restaurant.find(params[:id])
+      @restaurant.destroy
+      format.json { render json: @restaurant }
+      format.html { redirect_to '/' }
     end
   end
 

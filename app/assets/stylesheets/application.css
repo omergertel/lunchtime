@@ -123,8 +123,11 @@
 
 .error {
   color: red;
-  padding: 10px;
   text-align: center;
+}
+
+p.error {
+  padding: 10px;
 }
 
 .clickable {
