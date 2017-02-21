@@ -1,8 +1,9 @@
 class Review < ApplicationRecord
+  belongs_to :restaurant
+
   validates :name, presence: true, length: { minimum: 2 }
   validates :rating, presence: true, numericality: { only_integer: true, greater_than_or_equal_to: 0, less_than_or_equal_to: 3 }
 
-  belongs_to :restaurant
   after_save :calc_restaurant_rating!
   after_destroy :calc_restaurant_rating!
 

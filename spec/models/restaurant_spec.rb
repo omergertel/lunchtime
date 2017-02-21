@@ -7,14 +7,14 @@ RSpec.describe Restaurant, type: :model do
       genre: :sushi,
       rating: 1,
       accepts_10bis: true,
-      delivery_time: 30
+      delivery_time: 30,
     }
   end
 
   describe 'validations' do
     it 'should require all fields except address' do
       rest.keys.each do |field|
-        bad_rest = rest.select { |k, _v| k != field }
+        bad_rest = rest.reject { |k, _v| k == field }
         expect(Restaurant.new(bad_rest).valid?).to be false
       end
     end

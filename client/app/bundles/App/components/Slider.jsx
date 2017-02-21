@@ -1,20 +1,32 @@
-import React from 'react'
+import React from 'react';
 
-class Slider extends React.Component{
-  render() {
-    let step = (this.props.max-this.props.min)/this.props.steps;
-    return (
-        <div className="filter">
-          <label>{this.props.title}</label>
-          <input type="range"
-                 min={this.props.min}
-                 max={this.props.max}
-                 value={this.props.value}
-                 onChange={this.props.onChange} />
-               Up to {this.props.value} minutes
-        </div>
-    )
-  }
+function Slider(props) {
+  return (
+    <div className="filter">
+      <label htmlFor={`input-${props.title}`}>{props.title}</label>
+      <input
+        id={`input-${props.title}`}
+        type="range"
+        min={props.min}
+        max={props.max}
+        value={props.value}
+        onChange={props.onChange}
+      />
+      Up to {props.value} minutes
+    </div>
+  );
+}
+
+Slider.propTypes = {
+  title: React.PropTypes.string.isRequired,
+  min: React.PropTypes.number.isRequired,
+  max: React.PropTypes.number.isRequired,
+  onChange: React.PropTypes.func.isRequired,
+  value: React.PropTypes.number,
+};
+
+Slider.defaultProps = {
+  value: 120,
 };
 
 export default Slider;

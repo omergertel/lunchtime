@@ -1,12 +1,10 @@
 class RestaurantsController < ApplicationController
   def create
     restaurant = Restaurant.new(restaurant_params)
-    if !restaurant.valid?
+    unless restaurant.save
       respond_to do |format|
-        format.json { render json: restaurant.errors.messages, status: 400 }
+        format.json { render json: restaurant.errors.messages, status: :conflict }
       end
-    else
-      restaurant.save!
     end
   end
 
@@ -16,7 +14,7 @@ class RestaurantsController < ApplicationController
         genre: Restaurant.genres.keys.to_a,
         delivery_time_min: 0,
         delivery_time_max: 120,
-        ratings: [0, 1, 2, 3]
+        ratings: [0, 1, 2, 3],
       }
       format.json { render json: opts }
     end
