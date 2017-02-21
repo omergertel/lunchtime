@@ -1,112 +1,132 @@
-import React from 'react'
-import Restaurant from './Restaurant'
-import Filter from './Filter'
-import Slider from './Slider'
-import $ from 'jquery'
+import React from 'react';
+import $ from 'jquery';
+import Restaurant from './Restaurant';
+import Filter from './Filter';
+import Slider from './Slider';
 
-class RestaurantList extends React.Component{
-  constructor(props) {
+class RestaurantList extends React.Component {
+  static uniqueProperty(arr, property) {
+    return [...new Set(arr.map(obj => obj[property]))];
+  }
+  constructor() {
     super();
     this.state = {
       restaurants: [],
       genres: [],
       ratings: [],
-      selected_genre: 'Any',
-      selected_speed: 120,
-      selected_rating: 'Any'
+      selectedGenre: 'Any',
+      selectedSpeed: 120,
+      selectedRating: 'Any',
     };
-  }
-  handleRestaurantDelete(target) {
-    let self = this;
-    $.ajax({
-      type: "DELETE",
-      url: 'restaurants/' + target.props.id,
-    }).done(function(response){
-      self.loadData();
-    });
+
+    this.setGenre = this.setGenre.bind(this);
+    this.setRating = this.setRating.bind(this);
+    this.setSpeed = this.setSpeed.bind(this);
+    this.handleRestaurantDelete = this.handleRestaurantDelete.bind(this);
   }
   componentWillMount() {
     this.loadData();
   }
+  setGenre(e) {
+    this.setState({ selectedGenre: e.target.value });
+  }
+  setSpeed(e) {
+    this.setState({ selectedSpeed: Number(e.target.value) });
+  }
+  setRating(e) {
+    this.setState({ selectedRating: e.target.value });
+  }
   loadData() {
-    let self = this;
-    $.get('restaurants/').done(function(response){
-      let delivery_times = self.uniqueProperty(response, 'delivery_time');
-      self.setState({
+    $.get('restaurants/').done((response) => {
+      const deliveryTimes = RestaurantList.uniqueProperty(response, 'delivery_time')
+        .map(deliveryTime => Number(deliveryTime));
+      this.setState({
         restaurants: response,
-        genres: self.uniqueProperty(response, 'genre'),
-        ratings: self.uniqueProperty(response, 'rating'),
-        delivery_time_min: Math.min(delivery_times),
-        delivery_time_max: Math.max(delivery_times),
+        genres: RestaurantList.uniqueProperty(response, 'genre'),
+        ratings: RestaurantList.uniqueProperty(response, 'rating'),
+        delivery_time_min: Math.min(deliveryTimes),
+        delivery_time_max: Math.max(deliveryTimes),
       });
     });
   }
+  handleRestaurantDelete(target) {
+    $
+      .ajax({
+        type: 'DELETE',
+        url: `restaurants/${target.props.id}`,
+      })
+      .done(() => {
+        this.loadData();
+      });
+  }
   render() {
-    let selected_genre = this.state.selected_genre;
-    let selected_speed = this.state.selected_speed;
-    let selected_rating = this.state.selected_rating;
+    const selectedGenre = this.state.selectedGenre;
+    const selectedSpeed = this.state.selectedSpeed;
+    const selectedRating = this.state.selectedRating;
 
     let restaurants = [];
-    let self = this;
-    this.state.restaurants.forEach(function(restaurant) {
-      if (['Any',restaurant.genre].includes(selected_genre) &&
-          restaurant.delivery_time <= selected_speed &&
-          (selected_rating ==='Any' || restaurant.rating >= selected_rating)) {
-        restaurants.push(<Restaurant key={restaurant.id} handleDelete={self.handleRestaurantDelete.bind(self)} {...restaurant} />)
+    this.state.restaurants.forEach((restaurant) => {
+      if (
+        ['Any', restaurant.genre].includes(selectedGenre) &&
+        restaurant.delivery_time <= selectedSpeed &&
+        (selectedRating === 'Any' || restaurant.rating >= selectedRating)
+      ) {
+        restaurants.push(
+          <Restaurant
+            key={`restaurant-${restaurant.id}`}
+            handleDelete={this.handleRestaurantDelete}
+            {...restaurant}
+          />,
+        );
       }
     });
 
-    if (restaurants.length === 0){
+    if (restaurants.length === 0) {
       restaurants = (
         <div className="not-found">
-          <img src="assets/not_found.jpg" />
+          <img src="assets/not_found.jpg" alt="not found" />
           <p>No lunch for you, come back one year!</p>
         </div>
-      )
+      );
     }
 
     return (
-        <div>
-            <div className="filters row">
-              <div className="col-xs-4">
-                <Filter title="Cuisine"
-                        topOption="Any"
-                        value={this.state.selected_genre}
-                        options={this.state.genres}
-                        onChange={this.setGenre.bind(this)}/>
-              </div>
-              <div className="col-xs-4">
-                <Filter title="Minimal Rating"
-                        topOption="Any"
-                        value={this.state.selected_rating}
-                        options={this.state.ratings}
-                        onChange={this.setRating.bind(this)}/>
-              </div>
-              <div className="col-xs-4">
-                <Slider title="Speed"
-                        value={this.state.selected_speed}
-                        min="0" max="120"
-                        onChange={this.setSpeed.bind(this)}/>
-              </div>
-            </div>
-            <div className="content">
-            {restaurants}
-            </div>
+      <div>
+        <div className="filters row">
+          <div className="col-xs-4">
+            <Filter
+              title="Cuisine"
+              topOption="Any"
+              value={this.state.selectedGenre}
+              options={this.state.genres}
+              onChange={this.setGenre}
+            />
+          </div>
+          <div className="col-xs-4">
+            <Filter
+              title="Minimal Rating"
+              topOption="Any"
+              value={this.state.selectedRating}
+              options={this.state.ratings}
+              onChange={this.setRating}
+            />
+          </div>
+          <div className="col-xs-4">
+            <Slider
+              title="Speed"
+              value={this.state.selectedSpeed}
+              min={0}
+              max={120}
+              onChange={this.setSpeed}
+            />
+          </div>
         </div>
-    )
+        <div className="content">
+          {restaurants}
+        </div>
+      </div>
+    );
   }
-  uniqueProperty(arr, property) {
-    return [...new Set(arr.map(obj => obj[property]))];
-  }
-  setGenre(e) {
-    this.setState({ selected_genre: e.target.value })
-  }
-  setSpeed(e) {
-    this.setState({ selected_speed: e.target.value })
-  }
-  setRating(e) {
-    this.setState({ selected_rating: e.target.value })
-  }
-};
+}
 
 export default RestaurantList;
