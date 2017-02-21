@@ -56,7 +56,7 @@ class Edit extends React.Component {
     this.setState({ selected_genre: e.target.value });
   }
   setSpeed(e) {
-    this.setState({ selected_speed: e.target.value });
+    this.setState({ selected_speed: Number(e.target.value) });
   }
   setRating(e) {
     this.setState({ selected_rating: e.target.value });
